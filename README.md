@@ -14,7 +14,7 @@ A Python Object-Graph-Document-Mapper for working with OrientDB
 The idea 
 ========
 
-There is already awesome projects to work with Python and OrientDB, BulbFlow + Rexter is the most used tools, but they use HTTP/REST interface which is great but sometimes is slow and error prone. 
+There is already awesome projects to work with Python and OrientDB, BulbFlow + Rexter is the most used tools, but they use HTTP/REST interface which is great but sometimes is slow and unstable (depending on your stack). 
 
 Using the binary access via [liborient](https://github.com/dam2k/liborient) OrientEngine will provide the way to model orient classes as Python classes.
 
