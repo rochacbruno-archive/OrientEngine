@@ -11,7 +11,7 @@ A Python Object-Graph-Document-Mapper for working with OrientDB
 - Based in a fork of [PyOrient](https://github.com/rochacbruno/pyorient)
 
 
-The idea
+The idea 
 ========
 
 There is already awesome projects to work with Python and OrientDB, BulbFlow + Rexter is the most used tools, but they use HTTP/REST interface which is great but sometimes is slow and error prone. 
@@ -20,13 +20,15 @@ Using the binary access via [liborient](https://github.com/dam2k/liborient) Orie
 
 OrientEngine will provide **Vertex, Edge, Class and Cluster** classes to be extended in order to create Graph and Document database representation.
 
-Example (under construction)
+## Some syntax examples, not defined which one will be implemented.
+
+Example 1 
 ============================
 
 
 # Modeling 
 
-### vertexes.py
+### vertices.py
 ```python
 
 from orientengine import Vertex
@@ -68,11 +70,11 @@ class Live(Edge):
 ### controller.py
 ```python
 from datetime import datetime
-from .vertexes import Animal, Food, Environment
+from .vertices import Animal, Food, Environment
 from .edges import Eat, Live
 
 
-# create some instances (vertexes)
+# create some instances (vertices)
 
 rabbit = Animal(specie='lagomorph', endangered=False)
 dog = Animal(specie='canis lupus familiaris', endangered=False)
@@ -125,9 +127,9 @@ class Livable(EdgeManager, Vertex):
         
 ```
 
-Now use that managers as mixins on your vertexes
+Now use that managers as mixins on your vertices
 
-### vertexes.py
+### vertices.py
 ```python
 from orientengine import Vertex
 from orientengine.properties import StringProperty, IntegerProperty, BooleanProperty
@@ -153,11 +155,11 @@ Now **Animal** extends Eatable and Livable and to connect the edges will easily 
 ### controller.py
 ```python
 from datetime import datetime
-from .vertexes import Animal, Food, Environment
+from .vertices import Animal, Food, Environment
 from .edges import Eat, Live
 
 
-# create some instances (vertexes)
+# create some instances (vertices)
 
 rabbit = Animal(specie='lagomorph', endangered=False)
 
@@ -202,6 +204,95 @@ carrot_eaters = Animal.objects.filter(Eat_out=carrot)
 
 ```
 
+
+Example 2
+==========
+
+This example takes the same syntax to create the vertices and edges, but uses a bulbflow inspired way to connect edges and query. The problem with this approach is that we lose the track of edge creation (we could do it by overriding **out** method or creating **EdgeManager**, but now we need to use **Blinker** to manage this with signals only.
+
+
+# Modeling 
+
+### vertices.py
+```python
+
+from orientengine import Vertex
+from orientengine.properties import StringProperty, IntegerProperty, BooleanProperty
+
+
+class Animal(Vertex):
+    specie = StringProperty()
+    endangered = BooleanProperty()
+    
+
+class Food(Vertex):
+    color = StringProperty()
+    
+    
+class Environment(Vertex):
+    size = IntegerProperty()
+    
+```
+
+### edges.py
+```python
+from orientengine import Edge
+from orientengine.properties import IntegerProperty, DateTimeProperty
+
+
+class Eat(Edge):
+    amount = IntegerProperty()
+    
+    
+class Live(Edge):
+    since = DateTimeProperty()
+
+```
+
+
+# Creating instances
+
+### controller.py
+```python
+from datetime import datetime
+from orientengine import Orient
+from .vertices import Animal, Food, Environment
+from .edges import Eat, Live
+
+
+graph = Orient('remote:localhost/animals_database', user='admin', password='admin')
+graph.connect()
+
+# create some instances (vertices)
+
+rabbit = Animal(specie='lagomorph', endangered=False)
+dog = Animal(specie='canis lupus familiaris', endangered=False)
+quokka = Animal(specie='marsupial', endangered=True)
+
+
+carrot = Food(color='yellow')
+lettuce = Food(color='lightgreen')
+apple = Food(color='red')
+
+forest = Environment(size=10000)
+city = Environment(size=30000)
+beach = Environment(size=5500000)
+
+
+# define some links (edges) 
+
+graph.connect(rabbit, Eat(), carrot)
+graph.connect(rabbit, Eat(), lettuce)
+graph.connect(rabbit, Live(), forest)
+...
+
+```
+
+That simplifies a bit the edge creation, but now we do not have any method to track it, so need to use a signal handler.
+
+
+Suggestions
+============
 
 Have a suggestion or more ideas to the sintax? please comment on an issue.
 
