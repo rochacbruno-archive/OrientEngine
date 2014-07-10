@@ -266,17 +266,13 @@ graph.connect()
 # create some instances (vertices)
 
 rabbit = Animal(specie='lagomorph', endangered=False)
-dog = Animal(specie='canis lupus familiaris', endangered=False)
-quokka = Animal(specie='marsupial', endangered=True)
 
 
 carrot = Food(color='yellow')
 lettuce = Food(color='lightgreen')
-apple = Food(color='red')
 
 forest = Environment(size=10000)
-city = Environment(size=30000)
-beach = Environment(size=5500000)
+
 
 
 # define some links (edges) 
