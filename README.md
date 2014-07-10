@@ -8,7 +8,7 @@ A Python Object-Graph-Document-Mapper for working with OrientDB
 
 
 - Inspired by [MongoEngine](http://github.com/mongoengine) 
-- Based in a fork of [PyOrient](https://github.com/rochacbruno/pyorient)
+- Based in [PyOrient](https://github.com/rochacbruno/pyorient)
 
 
 The idea 
