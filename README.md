@@ -24,6 +24,8 @@ Example (under construction)
 ============================
 
 
+# Modeling 
+
 ### vertexes.py
 ```python
 
@@ -61,6 +63,8 @@ class Live(Edge):
 ```
 
 
+# Creating instances
+
 ### controller.py
 ```python
 from datetime import datetime
@@ -85,17 +89,16 @@ beach = Environment(size=5500000)
 
 
 # define some links (edges) 
-now = datetime.now()
 
 rabbit.out(Eat(amount=70), carrot)
 rabbit.out(Eat(amount=30), lettuce)
-rabbit.out(Live(since=now), forest)
+rabbit.out(Live(since=datetime.now), forest)
 
 dog.out(Eat(amount=10), carrot)
-dog.out(Live(since=now), city)
+dog.out(Live(since=datetime.now), city)
 
 quokka.out(Eat(amount=100), apple)
-quokka.out(Live(since=now), beach)
+quokka.out(Live(since=datetime.now), beach)
 
 
 ```
@@ -157,28 +160,52 @@ from .edges import Eat, Live
 # create some instances (vertexes)
 
 rabbit = Animal(specie='lagomorph', endangered=False)
-dog = Animal(specie='canis lupus familiaris', endangered=False)
-quokka = Animal(specie='marsupial', endangered=True)
-
 
 carrot = Food(color='yellow')
 lettuce = Food(color='lightgreen')
-apple = Food(color='red')
 
 forest = Environment(size=10000)
-city = Environment(size=30000)
-beach = Environment(size=5500000)
 
 
 # define some links (edges) 
-now = datetime.now()
 
 rabbit.eats(carrot, amount=70)
 rabbit.eats(lettuce, amount=30)
-rabbit.lives_in(forest, since=now)
+rabbit.lives_in(forest, since=datetime.now)
 
-...
+
+```
+
+# Browsing
+
+OrientDB supports SQL like language and it can be used through orientengine in two forms:
+
+### Raw Queries
+
+```python
+
+from orientengine import Query
+
+query = Query("SELECT expand( out() ) from Animal where name = 'Rabbit'")
+result = query.run(connection)
+
+```
+
+### orientengine objects lookup
+
+```python
+
+from vertex import Animal, Food
+
+carrot = Food.objects.get(name='carrot')
+carrot_eaters = Animal.objects.filter(Eat_out=carrot)
+
 ```
 
 
 Have a suggestion or more ideas to the sintax? please comment on an issue.
+
+
+
+
+
