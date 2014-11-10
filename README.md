@@ -30,8 +30,11 @@ class Eat(Edge):
     upper case attributes are configuration
     lower case attributes are fields
     """
-    ACTION = ('eat', 'eats')
-    RELATION = ('eaters', 'who_eats')
+    
+    SINGULAR_ACTION = 'eat'
+    PLURAL_ACTION = 'eats'  # there is also get_plural_action and get_singular_action if it needs to be dynamic
+    RELATION = ('eaters', 'who_eats')  # multiple terms can be used
+    
     amount = IntProperty()
     
     
@@ -72,12 +75,15 @@ class Food(Vertex, Eatable): # Can be eated In
 
 # define some links (edges) 
 # on each vertex
->>> rat.eats(pea)
->>> man.eats(pea, amount=30)
+>>> rat.eat(pea)
+>>> man.eat(pea, amount=30)
 
 # or extending another vertex "in" connection
 
 >>> pea.eaters.extend(rat, man)
+
+# or a vertex can eat any foods at the same time
+>>> man.eats([pea, corn, rice, tofu])
 
 
 # Who eats peas?
