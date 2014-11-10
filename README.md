@@ -26,7 +26,14 @@ OrientEngine will provide **Vertex, Edge, Class and Cluster** classes to be exte
 from orientengine import Edge, InEdgeInterface, OutEdgeInterface IntProperty
 
 class Eat(Edge):
-    amount = IntProperty
+    """
+    upper case attributes are configuration
+    lower case attributes are fields
+    """
+    ACTION = ('eat', 'eats')
+    RELATION = ('eaters', 'who_eats')
+    amount = IntProperty()
+    
     
 def Eater(OutEdgeInterface):
     edge = Eat
@@ -79,7 +86,7 @@ class Food(Vertex, Eatable): # Can be eated In
 [<OrientRecord(rat)>, <OrientRecord(man)>, ...]
 
 # or starting by Animal class
->>> Animal.objects(eats=pea)
+>>> Animal.objects(eats=pea) or Animal.objects(who_eats=pea)
 [<OrientRecord(rat)>, <OrientRecord(man)>, ...]
 
 ```
