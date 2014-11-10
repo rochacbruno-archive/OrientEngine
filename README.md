@@ -61,6 +61,8 @@ class Food(Vertex, Eatable): # Can be eated In
 
 #### SHELL
 
+>>> import orientengine
+>>> orientengine.connect(uri="localhost:2424", db="animals", user="admin", password="12345")
 >>> from vertices import Animal, Food
 >>> rat = Animal(specie='rodent', name='rat')
 >>> man = Animal(specie='human', name='man')
