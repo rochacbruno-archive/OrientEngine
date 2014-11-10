@@ -38,14 +38,14 @@ class Eat(Edge):
     amount = IntProperty()
     
     
-def Eater(OutEdgeInterface):
+class Eater(OutEdgeInterface):
     edge = Eat
     validators = []
     
     def link(self,):
         # optionally you can override the out link method
     
-def Eatable(InEdgeInterface):
+class Eatable(InEdgeInterface):
     edge = Eat
     validators = []
     
