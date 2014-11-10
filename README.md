@@ -26,19 +26,12 @@ OrientEngine will provide **Vertex, Edge, Class and Cluster** classes to be exte
 from orientengine import Edge, InEdgeInterface, OutEdgeInterface IntProperty
 
 class Eat(Edge):
-    """
-    upper case attributes are configuration
-    lower case attributes are fields
-    """
-    
-    SINGULAR_ACTION = 'eat'
-    PLURAL_ACTION = 'eats'  # there is also get_plural_action and get_singular_action if it needs to be dynamic
-    RELATION = ('eaters', 'who_eats')  # multiple terms can be used
-    
     amount = IntProperty()
     
     
 class Eater(OutEdgeInterface):
+    action = 'eat'
+    action_plural = 'eats'  # there is also get_plural_action and get_singular_action if it needs to be dynamic
     edge = Eat
     validators = []
     
@@ -46,6 +39,7 @@ class Eater(OutEdgeInterface):
         # optionally you can override the out link method
     
 class Eatable(InEdgeInterface):
+    related_names = ('eaters', 'who_eats')  # multiple terms can be used
     edge = Eat
     validators = []
     
